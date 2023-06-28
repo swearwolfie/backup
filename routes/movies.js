@@ -1,5 +1,8 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate'); // библиотека для валидации данных
+const {
+  createMovieValid,
+  deleteMovieValid,
+} = require('../middlewares/reqValidation');
 const {
   createMovie,
   getMovies,
@@ -8,23 +11,9 @@ const {
 // country, director, duration, year, description, image,
 // trailer, nameRU, nameEN и thumbnail, movieId
 
-router.post('/', celebrate({
-  body: Joi.object().keys({
-    country: Joi.string().min(2).max(30),
-    director: Joi.string().min(2),
-    duration: Joi.number(),
-    year: Joi.string(),
-    description: Joi.string().min(2).max(300),
-    image: Joi.string().regex(/^(https?:\/\/(www\.)?([a-zA-z0-9-]){1,}\.?([a-zA-z0-9]){2,8}(\/?([a-zA-z0-9-])*\/?)*\/?([-._~:/?#[]@!\$&'\(\)\*\+,;=])*)/).required(),
-    trailer: Joi.string().regex(/^(https?:\/\/(www\.)?([a-zA-z0-9-]){1,}\.?([a-zA-z0-9]){2,8}(\/?([a-zA-z0-9-])*\/?)*\/?([-._~:/?#[]@!\$&'\(\)\*\+,;=])*)/).required(),
-    nameRU: Joi.string().min(2).max(60),
-    nameEN: Joi.string().min(2).max(60),
-    thumbnail: Joi.string().regex(/^(https?:\/\/(www\.)?([a-zA-z0-9-]){1,}\.?([a-zA-z0-9]){2,8}(\/?([a-zA-z0-9-])*\/?)*\/?([-._~:/?#[]@!\$&'\(\)\*\+,;=])*)/).required(),
-    movieId: Joi.number(),
-  }),
-}), createMovie);
+router.post('/', createMovieValid, createMovie);
 router.get('/', getMovies);
-router.delete('/:movieId', deleteMovie);
+router.delete('/:movieId', deleteMovieValid, deleteMovie);
 
 module.exports = router;
 

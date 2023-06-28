@@ -1,23 +1,15 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate'); // библиотека для валидации данных
+const {
+  createUserValid,
+  authorizeValid,
+} = require('../middlewares/reqValidation');
 const { authorize, createUser } = require('../controllers/users');
 const { NotFound } = require('../errors/not-found-err');
 const auth = require('../middlewares/auth');
 
-router.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
+router.post('/signup', createUserValid, createUser);
 
-router.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), authorize);
+router.post('/signin', authorizeValid, authorize);
 
 // авторизация
 // router.use(auth);

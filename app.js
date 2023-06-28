@@ -3,15 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate'); // библиотека для валидации данных
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const { limiter } = require('./middlewares/rateLimiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { DB_ADDRESS } = require('./config');
 const router = require('./routes');
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // за 15 минут
-  max: 100, // можно совершить максимум 100 запросов с одного IP
-});
 
 // создаем приложение
 const app = express();
