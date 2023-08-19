@@ -20,7 +20,7 @@ mongoose.connect(DB_ADDRESS, {
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
-  'localhost:3000',
+  'http://localhost:3000',
 ];
 
 app.use((req, res, next) => {
